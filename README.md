@@ -19,3 +19,17 @@ The dataset was obtained from the [Kaggle Walmart Sales Forecasting Competition]
 > 3. Add a new column named `month_name` that contains the extracted months of the year on which the given transaction took place (Jan, Feb, Mar). Help determine which month of the year has the most sales and profit.
 
 2. **Exploratory Data Analysis (EDA):** Exploratory data analysis is done to answer the listed Business Questions and aims of this project.
+
+This project explores and analyzes structured data using fundamental SQL operations. The queries make use of:
+
+SELECT – to specify the columns of interest from the dataset.
+
+FROM – to define the source table.
+
+WHERE – to filter rows based on specific conditions.
+
+GROUP BY – to aggregate data, such as totals or counts, based on one or more fields.
+
+RANK() – a window function used to rank rows within a partition (e.g., ranking products by popularity within each category).
+
+ORDER BY – to sort the final results in ascending or descending order for better readability and insights.
