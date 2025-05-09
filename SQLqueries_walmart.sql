@@ -30,11 +30,11 @@ rating FLOAT (2,1)
 
 SELECT 
 	time,
-    (CASE 
-		WHEN time BETWEEN "00:00:00" AND "12:00:00" THEN "Morning"
+(CASE 
+	WHEN time BETWEEN "00:00:00" AND "12:00:00" THEN "Morning"
         WHEN time BETWEEN "12:01:00" AND "16:00:00" THEN "Afternoon"
         ELSE "Evening"
-   END ) AS time_of_date
+END ) AS time_of_date
 FROM sales;
 
 Alter TABLE sales ADD COLUMN time_of_day VARCHAR (20);
@@ -45,14 +45,13 @@ SET time_of_day = (
 		WHEN time BETWEEN "00:00:00" AND "12:00:00" THEN "Morning"
 		WHEN time BETWEEN "12:01:00" AND "16:00:00" THEN "Afternoon"
 		ELSE "Evening"
-	END
-);
+	END);
 
 -- day_name (days of the week : Mon, Tue, Wed, Thur, Fri)
 
 SELECT 
 	date,
-    DAYNAME(date) AS day_name
+    	DAYNAME(date) AS day_name
 FROM sales;
 
 ALTER TABLE sales ADD COLUMN day_name VARCHAR(10);
@@ -62,8 +61,8 @@ SET day_name = (DAYNAME (date)
 );
 -- month_name (months of the year)
 
-SELECT date,
-MONTHNAME (date) AS month_name
+SELECT 	date,
+	MONTHNAME (date) AS month_name
 FROM sales;
 
 ALTER TABLE sales ADD COLUMN month_name VARCHAR (10) ; 
@@ -89,49 +88,49 @@ SELECT
 FROM sales;
 
 -- What is the most common payment method?
-SELECT payment_method,
+SELECT 	payment_method,
 	COUNT(payment_method) AS cnt
 FROM sales
 GROUP BY payment_method
 ORDER BY cnt DESC;
 
 -- What is the most selling product line?
-SELECT product_line,
+SELECT 	product_line,
 	COUNT(product_line) AS cnt
 FROM sales
 GROUP BY product_line
 ORDER BY cnt DESC;
 
 -- What is the total revenue by month?
-SELECT month_name AS month,
+SELECT 	month_name AS month,
 	SUM(total) AS total_revenue
 FROM sales
 GROUP BY month_name
 ORDER BY total_revenue DESC;
 
 -- What month had the largest COGS?
-SELECT month_name AS month,
+SELECT 	month_name AS month,
 	SUM(cogs) AS total_cogs
 FROM sales
 GROUP BY month_name
 ORDER BY total_cogs DESC;
 
 -- What product line had the largest revenue?
-SELECT product_line,
+SELECT 	product_line,
 	SUM(total) AS total_revenue
 FROM sales
 GROUP BY product_line
 ORDER BY total_revenue DESC;
 
 -- What is the city with the largest revenue?
-SELECT city,
+SELECT 	city,
 	SUM(total) AS total_revenue
 FROM sales
 GROUP BY city
 ORDER BY total_revenue DESC;
 
 -- What product line had the largest VAT?
-SELECT product_line,
+SELECT 	product_line,
 	SUM(VAT) AS total_vat
 FROM sales
 GROUP BY product_line
@@ -142,10 +141,10 @@ SELECT
 	SUM(quantity)/ 6 AS average_sale
 FROM sales;
 
-SELECT product_line,
+SELECT 	product_line,
 	SUM(quantity) AS total_sale,
     CASE 
-		WHEN SUM(quantity)  >= 912 THEN "Good"
+	WHEN SUM(quantity)  >= 912 THEN "Good"
         ELSE "Bad"
 	END AS product_evaluation
 FROM sales
@@ -154,21 +153,21 @@ GROUP BY product_line;
 -- Which branch sold more products than average product sold?
 SELECT 
 	branch, 
-    SUM(quantity) AS total_sale
+    	SUM(quantity) AS total_sale
 FROM sales
 GROUP BY branch
 HAVING SUM(quantity) > (SELECT SUM(quantity)/3 FROM sales);
 
 -- What is the most common product line by gender?
-SELECT product_line, 
-	   gender,
+SELECT 	product_line, 
+	gender,
        COUNT(*) 
 FROM sales
 GROUP BY product_line, gender
 ORDER BY COUNT(*) DESC;
 
 -- What is the average rating of each product line?
-SELECT product_line,
+SELECT 	product_line,
 	AVG(rating) AS avg_rating
 FROM sales
 GROUP BY product_line
@@ -190,7 +189,7 @@ FROM sales;
 -- What is the most common customer type?
 SELECT
 	customer_type,
-    COUNT(*)
+    	COUNT(*)
 FROM sales
 GROUP BY customer_type
 ORDER BY COUNT(*)DESC;
@@ -198,41 +197,41 @@ ORDER BY COUNT(*)DESC;
 -- What is the gender of most of the customers?
 SELECT
 	gender, 
-    COUNT(*)
+    	COUNT(*)
 FROM sales
 GROUP BY gender
 ORDER BY COUNT(*)DESC;
 
 -- What is the gender distribution per branch?
 SELECT  
-	   branch,
-       gender,
-       COUNT(*)
+	branch,
+       	gender,
+       	COUNT(*)
 FROM sales
 GROUP BY branch, gender
 ORDER BY branch ASC;
 
 -- Which time of the day do customers give most ratings?
 SELECT  
-	   time_of_day,
-       Avg(rating) AS rate
+	time_of_day,
+       	Avg(rating) AS rate
 FROM sales
 GROUP BY time_of_day
 ORDER BY avg(rating) DESC;
 
 -- Which time of the day do customers give most ratings per branch?
-SELECT time_of_day,
-		branch,
-       Avg(rating) AS rate,
-       RANK () OVER (PARTITION BY branch ORDER BY Avg(rating) DESC)
+SELECT 	time_of_day,
+	branch,
+      	Avg(rating) AS rate,
+       	RANK () OVER (PARTITION BY branch ORDER BY Avg(rating) DESC)
 FROM sales
 GROUP BY time_of_day, branch
 ORDER BY branch ASC;
 
 -- Which day of the week has the best avg ratings?
 SELECT  
-	   day_name,
-       Avg(rating) AS rate
+	day_name,
+       	Avg(rating) AS rate
 FROM sales
 GROUP BY day_name
 ORDER BY avg(rating) DESC;
